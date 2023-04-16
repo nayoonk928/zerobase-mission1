@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class WifiResponse {
+    @SerializedName("TbPublicWifiInfo")
     private WifiPublicData wifiPublicData;
 
     public WifiPublicData getWifiPublicData() {
