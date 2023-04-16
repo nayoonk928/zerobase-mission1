@@ -1,0 +1,48 @@
+nav ul {
+    list-style: none;
+    display: flex;
+    padding: 0;
+}
+
+nav li {
+    margin-right: 10px;
+}
+
+nav li:last-child {
+    margin-right: 0;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+}
+
+header {
+    margin-bottom: 10px;
+}
+
+section {
+    margin-bottom: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+thead {
+    text-align: center;
+    color: white;
+    border: 1px white;
+    background-color: #11be67;
+    padding: 8px;
+    height: 50px;
+}
+
+tbody {
+    text-align: center;
+}
+
+tr:last-child td {
+    border-bottom: 1px black;
+}
