@@ -1,5 +1,9 @@
 package API;
 
+/*
+    @author Nayoon
+ */
+
 public class ApiConfig {
     public static final String DOMAIN = "http://openapi.seoul.go.kr:8088/";
     public static final String KEY = "77715057646c696536344b4a6d4671";

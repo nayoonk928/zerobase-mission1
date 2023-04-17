@@ -1,5 +1,8 @@
 package DTO;
 
+/*
+    @author Nayoon
+ */
 public class WifiHistoryDTO {
     int HIS_NO; //기록번호
     String LAT; //위도

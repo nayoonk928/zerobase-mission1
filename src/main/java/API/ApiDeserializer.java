@@ -1,5 +1,9 @@
 package API;
 
+/*
+    @author Nayoon
+ */
+
 import DTO.WifiDTO;
 import DTO.WifiResponse;
 import com.google.gson.*;
