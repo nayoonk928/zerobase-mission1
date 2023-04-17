@@ -13,7 +13,6 @@ public class SqliteConnector {
         try {
             Class.forName(driver);
             connection = DriverManager.getConnection(location);
-            System.out.println("SQLite 연결 성공");
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
@@ -27,7 +26,6 @@ public class SqliteConnector {
         try {
             if (connection != null) {
                 connection.close();
-                System.out.println("SQLite 연결 종료");
             }
         } catch (SQLException e) {
             e.printStackTrace();

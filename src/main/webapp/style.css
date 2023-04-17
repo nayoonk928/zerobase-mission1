@@ -46,3 +46,9 @@ tbody {
 tr:last-child td {
     border-bottom: 1px black;
 }
+
+h1, a {
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+}

@@ -11,23 +11,27 @@
   <h1>와이파이 정보 구하기</h1>
   <nav>
     <ul>
-      <li><a href="/home">홈</a></li>
+      <li><a href="HomeServlet">홈</a></li>
       <li>|</li>
-      <li><a href="/history">위치 히스토리 목록</a></li>
+      <li><a href="HistoryServlet">위치 히스토리 목록</a></li>
       <li>|</li>
-      <li><a href="#">Open API 와이파이 정보 가져오기</a></li>
+      <li><a href="LoadWifiServlet">Open API 와이파이 정보 가져오기</a></li>
+      <li>|</li>
+      <li><a href="HomeServlet">북마크 보기</a></li>
+      <li>|</li>
+      <li><a href="HomeServlet">북마크 그룹 관리</a></li>
     </ul>
   </nav>
 </header>
 
 <main>
   <section>
-    <form method="post" action="/submit-form.jsp">
+    <form method="post" action="/submit">
       <label for="LAT">LAT:</label>
       <input type="text" id="LAT" name="LAT">
       <label for="LNT">LNT:</label>
       <input type="text" id="LNT" name="LNT">
-      <button>내 위치 가져오기</button>
+        <button>내 위치 가져오기</button>
       <button>근처 WIFI 정보 보기</button>
     </form>
   </section>

@@ -1,10 +1,16 @@
 package API;
 
+import DTO.WifiDTO;
+import DTO.WifiResponse;
+import com.google.gson.*;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
 
 public class ApiClient {
     private static ApiClient instance;
@@ -12,36 +18,32 @@ public class ApiClient {
     private final String KEY;
     private final String TYPE;
     private final String SERVICE;
-    private final int START_IDX;
-    private final int END_IDX;
 
-    private ApiClient(String domain, String key, String type, String service, int startIdx, int endIdx) {
+    public ApiClient(String domain, String key, String type, String service) {
         DOMAIN = domain;
         KEY = key;
         TYPE = type;
         SERVICE = service;
-        START_IDX = startIdx;
-        END_IDX = endIdx;
     }
 
-    public static ApiClient getInstance(String domain, String key, String type, String service, int startIdx, int endIdx) {
+    public static ApiClient getInstance(String domain, String key, String type, String service) {
         if (instance == null) {
-            instance = new ApiClient(domain, key, type, service, startIdx, endIdx);
+            instance = new ApiClient(domain, key, type, service);
         }
         return instance;
     }
 
-    public String callApi() throws IOException {
+    public WifiResponse callApi(int startIdx, int endIdx) throws IOException {
         OkHttpClient client = new OkHttpClient();
         HttpUrl url = new HttpUrl.Builder()
                 .scheme("http")
                 .host("openapi.seoul.go.kr")
                 .port(8088)
                 .addPathSegments(KEY)
-                .addPathSegments(TYPE)
-                .addPathSegments(SERVICE)
-                .addPathSegments(Integer.toString(START_IDX))
-                .addPathSegments(Integer.toString(END_IDX))
+                .addPathSegment(TYPE)
+                .addPathSegment(SERVICE)
+                .addPathSegment(Integer.toString(startIdx))
+                .addPathSegment(Integer.toString(endIdx))
                 .build();
 
         Request request = new Request.Builder()
@@ -53,7 +55,10 @@ public class ApiClient {
                 throw new IOException("Unexpected code " + response);
             }
 
-            return response.body().string();
+            String responseBody = response.body().string();
+            System.out.println(responseBody); // API 응답 데이터 콘솔 출력
+            Gson gson = new Gson();
+            return gson.fromJson(responseBody, WifiResponse.class);
         }
     }
 }

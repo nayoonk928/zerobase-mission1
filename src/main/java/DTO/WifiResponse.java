@@ -1,22 +1,37 @@
 package DTO;
 
+import API.ApiConfig;
+import API.ApiDeserializer;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
 
-import DAO.WifiPublicData;
-import lombok.Getter;
-import lombok.Setter;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
-@Getter
-@Setter
+@JsonAdapter(ApiDeserializer.class)
 public class WifiResponse {
-    @SerializedName("TbPublicWifiInfo")
-    private WifiPublicData wifiPublicData;
+    @SerializedName("list_total_count")
+    private int totalCount;
+    @SerializedName("row")
+    private List<WifiDTO> wifiDTOList;
 
-    public WifiPublicData getWifiPublicData() {
-        return wifiPublicData;
+    public WifiResponse(int totalCount, List<WifiDTO> wifiDTOList) {
+        this.totalCount = totalCount;
+        this.wifiDTOList = wifiDTOList;
     }
 
-    public void setWifiPublicData(WifiPublicData wifiPublicData) {
-        this.wifiPublicData = wifiPublicData;
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public List<WifiDTO> getWifiDTOList() {
+        if (wifiDTOList == null) {
+            return new ArrayList<>();
+        }
+        return wifiDTOList;
     }
 }
