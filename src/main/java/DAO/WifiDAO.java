@@ -10,21 +10,19 @@ import DTO.WifiDTO;
 import DTO.WifiResponse;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class WifiDAO {
     private SqliteConnector connector;
     private ApiClient apiClient;
 
-    public WifiDAO(ApiClient apiClient) {
-        this.apiClient = apiClient;
-    }
-
-    public WifiDAO(SqliteConnector connector) {
-        this.connector = connector;
+    public WifiDAO() {
+        connector = new SqliteConnector();
+        connector.connect();
     }
 
     public WifiDAO(ApiClient apiClient, SqliteConnector connector) {
@@ -36,13 +34,13 @@ public class WifiDAO {
         connector.connect();
         Connection conn = connector.getConnection();
         PreparedStatement pstmt = null;
-        String sql = "INSERT OR IGNORE INTO wifiInfo (X_SWIFI_MGR_NO, X_SWIFI_WRDOFC, X_SWIFI_MAIN_NM, X_SWIFI_ADRES1, " +
+        String query = "INSERT OR IGNORE INTO wifiInfo (X_SWIFI_MGR_NO, X_SWIFI_WRDOFC, X_SWIFI_MAIN_NM, X_SWIFI_ADRES1, " +
                 "X_SWIFI_ADRES2, X_SWIFI_INSTL_FLOOR, X_SWIFI_INSTL_TY, X_SWIFI_INSTL_MBY, X_SWIFI_SVC_SE, " +
                 "X_SWIFI_CMCWR, X_SWIFI_CNSTC_YEAR, X_SWIFI_INOUT_DOOR, X_SWIFI_REMARS3, LAT, LNT, WORK_DTTM) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
-            pstmt = conn.prepareStatement(sql);
+            pstmt = conn.prepareStatement(query);
 
             int pageSize = 1000;
             int startIdx = 1;
@@ -104,5 +102,90 @@ public class WifiDAO {
             if (conn != null) conn.close();
         }
     }
+
+    public Map<WifiDTO, Double> findNearWifiDB(double myLat, double myLnt) throws IOException, SQLException {
+        connector.connect();
+        Connection conn = connector.getConnection();
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        String query = "SELECT *,\n" +
+                "(ABS(LAT - ?) * ABS(LAT - ?)), + \n" +
+                "(ABS(LNT - ?) * ABS(LNT - ?)) AS distance\n" +
+                "FROM wifiInfo ORDER BY distance ASC LIMIT 20;";
+
+        Map<WifiDTO, Double> wifiList = new HashMap<>();
+
+        try {
+            pstmt = conn.prepareStatement(query);
+            pstmt.setDouble(1, myLat);
+            pstmt.setDouble(2, myLat);
+            pstmt.setDouble(3, myLnt);
+            pstmt.setDouble(4, myLnt);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                String X_SWIFI_MGR_NO = rs.getString("X_SWIFI_MGR_NO");
+                String X_SWIFI_WRDOFC = rs.getString("X_SWIFI_WRDOFC");
+                String X_SWIFI_MAIN_NM = rs.getString("X_SWIFI_MAIN_NM");
+                String X_SWIFI_ADRES1 = rs.getString("X_SWIFI_ADRES1");
+                String X_SWIFI_ADRES2 = rs.getString("X_SWIFI_ADRES2");
+                String X_SWIFI_INSTL_FLOOR = rs.getString("X_SWIFI_INSTL_FLOOR");
+                String X_SWIFI_INSTL_TY = rs.getString("X_SWIFI_INSTL_TY");
+                String X_SWIFI_INSTL_MBY = rs.getString("X_SWIFI_INSTL_MBY");
+                String X_SWIFI_SVC_SE = rs.getString("X_SWIFI_SVC_SE");
+                String X_SWIFI_CMCWR = rs.getString("X_SWIFI_CMCWR");
+                String X_SWIFI_CNSTC_YEAR = rs.getString("X_SWIFI_CNSTC_YEAR");
+                String X_SWIFI_INOUT_DOOR = rs.getString("X_SWIFI_INOUT_DOOR");
+                String X_SWIFI_REMARS3 = rs.getString("X_SWIFI_REMARS3");
+                String LAT = rs.getString("LAT");
+                String LNT = rs.getString("LNT");
+                String WORK_DTTM = rs.getString("WORK_DTTM");
+
+                double distance = Math.sqrt(rs.getDouble("distance"));
+                double realDistance = getDistance(myLat, myLnt, Double.parseDouble(LAT), Double.parseDouble(LNT));
+                double roundedDistance = Double.parseDouble(new DecimalFormat("##.####").format(realDistance));
+
+                WifiDTO wifiDTO = new WifiDTO();
+                wifiDTO.setX_SWIFI_MGR_NO(X_SWIFI_MGR_NO);
+                wifiDTO.setX_SWIFI_WRDOFC(X_SWIFI_WRDOFC);
+                wifiDTO.setX_SWIFI_MAIN_NM(X_SWIFI_MAIN_NM);
+                wifiDTO.setX_SWIFI_ADRES1(X_SWIFI_ADRES1);
+                wifiDTO.setX_SWIFI_ADRES2(X_SWIFI_ADRES2);
+                wifiDTO.setX_SWIFI_INSTL_FLOOR(X_SWIFI_INSTL_FLOOR);
+                wifiDTO.setX_SWIFI_INSTL_TY(X_SWIFI_INSTL_TY);
+                wifiDTO.setX_SWIFI_INSTL_MBY(X_SWIFI_INSTL_MBY);
+                wifiDTO.setX_SWIFI_SVC_SE(X_SWIFI_SVC_SE);
+                wifiDTO.setX_SWIFI_CMCWR(X_SWIFI_CMCWR);
+                wifiDTO.setX_SWIFI_CNSTC_YEAR(X_SWIFI_CNSTC_YEAR);
+                wifiDTO.setX_SWIFI_INOUT_DOOR(X_SWIFI_INOUT_DOOR);
+                wifiDTO.setX_SWIFI_REMARS3(X_SWIFI_REMARS3);
+                wifiDTO.setLAT(LAT);
+                wifiDTO.setLNT(LNT);
+                wifiDTO.setWORK_DTTM(WORK_DTTM);
+                wifiDTO.setDistance(roundedDistance);
+                wifiList.put(wifiDTO, roundedDistance);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (pstmt != null) pstmt.close();
+            if (conn != null) conn.close();
+        }
+
+        return wifiList;
+    }
+
+    // 정확한 거리를 구하기 위한 메서드
+    public double getDistance(double lat1, double lnt1, double lat2, double lnt2) {
+        final double EARTH_RADIUS = 6371; // 지구 반지름
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLng = Math.toRadians(lnt2 - lnt1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                        Math.sin(dLng / 2) * Math.sin(dLng / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return EARTH_RADIUS * c;
+    }
 }
+
 

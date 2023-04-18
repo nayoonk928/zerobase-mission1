@@ -17,7 +17,9 @@ public class SqliteConnector {
         try {
             Class.forName(driver);
             connection = DriverManager.getConnection(location);
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
