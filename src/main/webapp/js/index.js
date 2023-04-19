@@ -1,6 +1,10 @@
+/*
+    @author Nayoon
+ */
+
 function getLocation() {
     if (navigator.geolocation) {
-        navigator.permissions.query({name:'geolocation'}).then(function(result) {
+        navigator.permissions.query({name: 'geolocation'}).then(function (result) {
             if (result.state === 'granted') {
                 navigator.geolocation.getCurrentPosition(showPosition, showError);
             } else if (result.state === 'prompt') {
@@ -17,17 +21,17 @@ function getLocation() {
 }
 
 function showPosition(position) {
-    setTimeout(function(){
+    setTimeout(function () {
         let lat = position.coords.latitude;
         let lnt = position.coords.longitude;
         // 현재 위치 정보 받아오기 성공 시, 위도와 경도 값을 각각의 input 요소에 할당
-        document.querySelector('.lat').value = lat;
-        document.querySelector('.lnt').value = lnt;
+        document.querySelector('.myLat').value = lat;
+        document.querySelector('.myLnt').value = lnt;
     }, 1000); // 1초 대기
 }
 
 function showError(error) {
-    switch(error.code) {
+    switch (error.code) {
         case error.PERMISSION_DENIED:
             alert("위치 정보 공유에 동의가 필요합니다.");
             break;
@@ -43,50 +47,53 @@ function showError(error) {
     }
 }
 
-function findNearWifi() {
-    let myLat = $("#myLat").val();
-    let myLnt = $("#myLnt").val();
+function getNearWifi() {
+    let myLat = $(".myLat").val();
+    let myLnt = $(".myLnt").val();
 
     $.ajax({
         type: "GET",
         url: "FindNearWifiServlet",
         data: {myLat: myLat, myLnt: myLnt},
-        dataType: "json",
-        success: function(data) {
-            console.log("succeess");
+        success: function (data) {
+            let wifiList = data;
+            // wifiList 가 없으면 오류 처리
+            if (!wifiList) {
+                alert("데이터가 없습니다.");
+                return;
+            }
+
             // 받아온 데이터를 이용하여 테이블을 수정하는 코드
             let wifiTableBody = document.getElementById("wifiTableBody");
             wifiTableBody.innerHTML = ""; // 기존에 있던 내용을 모두 지우기
 
-            let wifiList = data; // JSON 데이터를 자바스크립트 객체로 변환
-
-            for (let i = 0; i < wifiList.length; i++) {
-                let wifi = wifiList[i];
-                console.log(i);
-                console.log(wifi);
+            for (let wifiDTO of wifiList) {
                 let row = document.createElement("tr");
-                row.innerHTML = "<td>" + wifi.distance + "</td>" +
-                                "<td>" + wifi.X_SWIFI_MGR_NO + "</td>" +
-                                "<td>" + wifi.X_SWIFI_WRDOFC + "</td>" +
-                                "<td>" + wifi.X_SWIFI_MAIN_NM + "</td>" +
-                                "<td>" + wifi.X_SWIFI_ADRES1 + "</td>" +
-                                "<td>" + wifi.X_SWIFI_ADRES2 + "</td>" +
-                                "<td>" + wifi.X_SWIFI_INSTL_FLOOR + "</td>" +
-                                "<td>" + wifi.X_SWIFI_INSTL_TY + "</td>" +
-                                "<td>" + wifi.X_SWIFI_INSTL_MBY + "</td>" +
-                                "<td>" + wifi.X_SWIFI_SVC_SE + "</td>" +
-                                "<td>" + wifi.X_SWIFI_CMCWR + "</td>" +
-                                "<td>" + wifi.X_SWIFI_CNSTC_YEAR + "</td>" +
-                                "<td>" + wifi.X_SWIFI_INOUT_DOOR + "</td>" +
-                                "<td>" + wifi.X_SWIFI_REMARS3 + "</td>" +
-                                "<td>" + wifi.LAT + "</td>" +
-                                "<td>" + wifi.LNT + "</td>" +
-                                "<td>" + wifi.WORK_DTTM + "</td>";
+                row.innerHTML = "<td>" + wifiDTO.distance + "</td>" +
+                    "<td>" + wifiDTO.X_SWIFI_MGR_NO + "</td>" +
+                    "<td>" + wifiDTO.X_SWIFI_WRDOFC + "</td>" +
+                    "<td>" + wifiDTO.X_SWIFI_MAIN_NM + "</td>" +
+                    "<td>" + wifiDTO.X_SWIFI_ADRES1 + "</td>" +
+                    "<td>" + wifiDTO.X_SWIFI_ADRES2 + "</td>" +
+                    "<td>" + wifiDTO.X_SWIFI_INSTL_FLOOR + "</td>" +
+                    "<td>" + wifiDTO.X_SWIFI_INSTL_TY + "</td>" +
+                    "<td>" + wifiDTO.X_SWIFI_INSTL_MBY + "</td>" +
+                    "<td>" + wifiDTO.X_SWIFI_SVC_SE + "</td>" +
+                    "<td>" + wifiDTO.X_SWIFI_CMCWR + "</td>" +
+                    "<td>" + wifiDTO.X_SWIFI_CNSTC_YEAR + "</td>" +
+                    "<td>" + wifiDTO.X_SWIFI_INOUT_DOOR + "</td>" +
+                    "<td>" + wifiDTO.X_SWIFI_REMARS3 + "</td>" +
+                    "<td>" + wifiDTO.LAT + "</td>" +
+                    "<td>" + wifiDTO.LNT + "</td>" +
+                    "<td>" + wifiDTO.WORK_DTTM + "</td>";
 
                 wifiTableBody.appendChild(row);
             }
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
+            console.log(xhr); // 오류 출력
+            console.log(status);
+            console.log(error);
             alert("Error: " + error);
         }
     });

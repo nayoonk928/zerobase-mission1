@@ -6,6 +6,7 @@ package Controller;
 
 import DAO.WifiDAO;
 import DTO.WifiDTO;
+import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,13 +15,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Map;
+import java.util.List;
 
 @WebServlet(name = "FindNearWifiServlet", urlPatterns = {"/FindNearWifiServlet"})
 public class FindNearWifiServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html; charset=UTF-8");
 
         String myLatStr = request.getParameter("myLat");
         String myLntStr = request.getParameter("myLnt");
@@ -34,10 +34,11 @@ public class FindNearWifiServlet extends HttpServlet {
         double myLnt = Double.parseDouble(myLntStr);
 
         WifiDAO wifiDAO = new WifiDAO();
+
         try {
-            Map<WifiDTO, Double> wifiList = wifiDAO.findNearWifiDB(myLat, myLnt);
-            request.setAttribute("WifiList", wifiList);
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            List<WifiDTO> wifiList = wifiDAO.findNearWifiDB(myLat, myLnt);
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write(new Gson().toJson(wifiList));
         } catch (SQLException e) {
             response.getWriter().println("Database error: " + e.getMessage());
         } catch (IOException e) {
