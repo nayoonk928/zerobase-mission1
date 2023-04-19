@@ -23,8 +23,8 @@ public class WifiDTO {
     private String X_SWIFI_CNSTC_YEAR; //설치년도
     private String X_SWIFI_INOUT_DOOR; //실내외구분
     private String X_SWIFI_REMARS3; //접속환경
-    private String LAT; //x좌표
-    private String LNT; //y좌표
+    private Double LAT; //x좌표
+    private Double LNT; //y좌표
     private String WORK_DTTM; //작업일자
     private Double distance; // 거리
 }

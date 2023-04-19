@@ -36,7 +36,24 @@ public class WifiDAO {
         String query = "INSERT INTO wifiInfo (X_SWIFI_MGR_NO, X_SWIFI_WRDOFC, X_SWIFI_MAIN_NM, X_SWIFI_ADRES1, " +
                 "X_SWIFI_ADRES2, X_SWIFI_INSTL_FLOOR, X_SWIFI_INSTL_TY, X_SWIFI_INSTL_MBY, X_SWIFI_SVC_SE, " +
                 "X_SWIFI_CMCWR, X_SWIFI_CNSTC_YEAR, X_SWIFI_INOUT_DOOR, X_SWIFI_REMARS3, LAT, LNT, WORK_DTTM) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CAST(? AS REAL), CAST(? AS REAL), ?) " +
+                "ON CONFLICT(X_SWIFI_MGR_NO) DO UPDATE SET " +
+                "X_SWIFI_WRDOFC = excluded.X_SWIFI_WRDOFC, " +
+                "X_SWIFI_MAIN_NM = excluded.X_SWIFI_MAIN_NM, " +
+                "X_SWIFI_ADRES1 = excluded.X_SWIFI_ADRES1, " +
+                "X_SWIFI_ADRES2 = excluded.X_SWIFI_ADRES2, " +
+                "X_SWIFI_INSTL_FLOOR = excluded.X_SWIFI_INSTL_FLOOR, " +
+                "X_SWIFI_INSTL_TY = excluded.X_SWIFI_INSTL_TY, " +
+                "X_SWIFI_INSTL_MBY = excluded.X_SWIFI_INSTL_MBY, " +
+                "X_SWIFI_SVC_SE = excluded.X_SWIFI_SVC_SE, " +
+                "X_SWIFI_CMCWR = excluded.X_SWIFI_CMCWR, " +
+                "X_SWIFI_CNSTC_YEAR = excluded.X_SWIFI_CNSTC_YEAR, " +
+                "X_SWIFI_INOUT_DOOR = excluded.X_SWIFI_INOUT_DOOR, " +
+                "X_SWIFI_REMARS3 = excluded.X_SWIFI_REMARS3, " +
+                "LAT = excluded.LAT, " +
+                "LNT = excluded.LNT, " +
+                "WORK_DTTM = excluded.WORK_DTTM";
+
 
         try {
             pstmt = conn.prepareStatement(query);
@@ -86,8 +103,15 @@ public class WifiDAO {
                         pstmt.setString(11, wifiDTO.getX_SWIFI_CNSTC_YEAR());
                         pstmt.setString(12, wifiDTO.getX_SWIFI_INOUT_DOOR());
                         pstmt.setString(13, wifiDTO.getX_SWIFI_REMARS3());
-                        pstmt.setString(14, wifiDTO.getLAT());
-                        pstmt.setString(15, wifiDTO.getLNT());
+
+                        // api 에 LNT 와 LAT 가 서로 바뀌어 입력되어 있는 경우 처리
+                        if (wifiDTO.getLAT() > 90.0 || wifiDTO.getLAT() < -90.0) {
+                            pstmt.setDouble(14, wifiDTO.getLNT());
+                            pstmt.setDouble(15, wifiDTO.getLAT());
+                        } else {
+                            pstmt.setDouble(14, wifiDTO.getLAT());
+                            pstmt.setDouble(15, wifiDTO.getLNT());
+                        }
                         pstmt.setString(16, wifiDTO.getWORK_DTTM());
 
                         pstmt.executeUpdate();
@@ -110,8 +134,11 @@ public class WifiDAO {
         ResultSet rs = null;
 
         String query = "SELECT *,\n" +
-                "(6371 * 2 * ASIN(SQRT(POWER(SIN((? - abs(LAT)) * pi()/180 / 2), 2) + " +
-                "COS(? * pi()/180) * COS(abs(LAT) * pi()/180) * POWER(SIN((? - LNT) * pi()/180 / 2), 2)))) AS distance\n" +
+                "(6371 * ACOS(COS(RADIANS(?)) *" +
+                "COS(RADIANS(LAT)) * " +
+                "COS(RADIANS(LNT) - RADIANS(?)) +" +
+                "SIN(RADIANS(?)) * SIN(RADIANS(LAT))))" +
+                "AS distance\n" +
                 "FROM wifiInfo\n" +
                 "ORDER BY distance ASC LIMIT 20;";
 
@@ -119,8 +146,8 @@ public class WifiDAO {
 
         try {
             pstmt = conn.prepareStatement(query);
-            pstmt.setDouble(1, myLnt);
-            pstmt.setDouble(2, myLat);
+            pstmt.setDouble(1, myLat);
+            pstmt.setDouble(2, myLnt);
             pstmt.setDouble(3, myLat);
             rs = pstmt.executeQuery();
 
@@ -139,10 +166,10 @@ public class WifiDAO {
                 String X_SWIFI_CNSTC_YEAR = rs.getString("X_SWIFI_CNSTC_YEAR");
                 String X_SWIFI_INOUT_DOOR = rs.getString("X_SWIFI_INOUT_DOOR");
                 String X_SWIFI_REMARS3 = rs.getString("X_SWIFI_REMARS3");
-                String LAT = rs.getString("LAT");
-                String LNT = rs.getString("LNT");
+                Double LAT = rs.getDouble("LAT");
+                Double LNT = rs.getDouble("LNT");
                 String WORK_DTTM = rs.getString("WORK_DTTM");
-                double distance = Math.round(Math.sqrt(rs.getDouble("distance")) * 10000.0) / 10000.0;
+                double distance = rs.getDouble("distance");
 
                 wifiDTO.setX_SWIFI_MGR_NO(X_SWIFI_MGR_NO);
                 wifiDTO.setX_SWIFI_WRDOFC(X_SWIFI_WRDOFC);
@@ -160,7 +187,7 @@ public class WifiDAO {
                 wifiDTO.setLAT(LAT);
                 wifiDTO.setLNT(LNT);
                 wifiDTO.setWORK_DTTM(WORK_DTTM);
-                wifiDTO.setDistance(distance);
+                wifiDTO.setDistance((double) Math.round(distance * 10000) / 10000.0);
                 wifiList.add(wifiDTO);
             }
         } catch (SQLException e) {
