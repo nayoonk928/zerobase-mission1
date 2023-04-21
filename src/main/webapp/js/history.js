@@ -20,22 +20,18 @@ function insertHistory() {
 
 function getAllHistory() {
     $.ajax({
-        url: 'GetHistoryServlet',
-        type: 'GET',
-        //dataType: 'json',
-        success: function(histories) {
-            let tbody = document.getElementById("historyTableBody");
-            tbody.innerHTML = "";
+        type: "GET",
+        url: "GetHistoryServlet",
+        dataType: "json",
+        success: function (histories) {
+            console.log(histories);
+            if (histories.length > 0) {
+                let tbody = document.getElementById("historyTableBody");
+                tbody.innerHTML = "";
 
-            if (histories.length === 0) {
-                let row = document.createElement("tr");
-                row.innerHTML = "<td colspan='5' height='50'>위치 히스토리가 없습니다.</td>";
-                tbody.appendChild(row);
-
-            } else {
                 for (let history of histories) {
                     let row = document.createElement("tr");
-                    row.innerHTML = "<td>" + history.HIS_NO + "</td>" +
+                    row.innerHTML = "<td>" + history.HIS_NO.toString() + "</td>" +
                         "<td>" + history.LAT + "</td>" +
                         "<td>" + history.LNT + "</td>" +
                         "<td>" + history.LKUP_DTTM + "</td>" +
@@ -59,14 +55,17 @@ function getAllHistory() {
 
 function clickDeleteButton(event) {
     let hisNo = event.target.parentNode.parentNode.cells[0].textContent;
-    let xhr = new XMLHttpRequest();
-    xhr.open("GET", "DeleteHistoryServlet", true);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-            alert(xhr.responseText);
-            location.reload();
-        }
-    };
-    xhr.send("hisNo=" + hisNo);
+    if (confirm(hisNo + " 번 히스토리를 삭제하시겠습니까?")) {
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "DeleteHistoryServlet?hisNo=" + hisNo, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                alert(hisNo + " 번 히스토리의 삭제가 완료되었습니다.");
+                location.reload();
+            }
+        };
+        xhr.send();
+    } else {
+        history.back();
+    }
 }

@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <title>와이파이 정보 구하기</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(window).on('beforeunload', function() {
             // "근처 Wifi 정보 보기" 버튼을 누른 후에만 사용자의 입력값 유지
@@ -31,11 +31,11 @@
     <h1>와이파이 정보 구하기</h1>
     <nav>
         <ul>
-            <li><a href="HomeServlet">홈</a></li>
+            <li><a href="index.jsp">홈</a></li>
             <li>|</li>
-            <li><a href="GetHistoryServlet">위치 히스토리 목록</a></li>
+            <li><a href="history.jsp">위치 히스토리 목록</a></li>
             <li>|</li>
-            <li><a href="LoadWifiServlet">Open API 와이파이 정보 가져오기</a></li>
+            <li><a href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a></li>
             <li>|</li>
             <li><a href="HomeServlet">북마크 보기</a></li>
             <li>|</li>
@@ -46,7 +46,7 @@
 
 <main>
     <section>
-        <form action="FindNearWifiServlet" method="get">
+        <form action="FindNearWifiServlet" method="GET">
             <%
                 String latStr = request.getParameter("myLat");
                 String lntStr = request.getParameter("myLnt");
@@ -85,7 +85,7 @@
         </thead>
         <tbody id="wifiTableBody">
         <tr>
-            <th colspan="17" height="50">위치 정보를 입력한 후에 조회해 주세요.</th>
+            <td colspan="17" height="50">위치 정보를 입력한 후에 조회해 주세요.</td>
         </tr>
         </tbody>
     </table>

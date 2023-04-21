@@ -32,8 +32,8 @@ public class InsertHistoryServlet extends HttpServlet {
             return;
         }
 
-        Double myLat = latStr == null ? 0.0 : Double.parseDouble(latStr);
-        Double myLnt = lntStr == null ? 0.0 : Double.parseDouble(lntStr);
+        Double myLat = Double.parseDouble(latStr);
+        Double myLnt = Double.parseDouble(lntStr);
 
         // 버튼을 누른 시간 구하기
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");

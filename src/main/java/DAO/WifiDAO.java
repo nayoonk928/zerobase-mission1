@@ -52,7 +52,8 @@ public class WifiDAO {
                 "X_SWIFI_REMARS3 = excluded.X_SWIFI_REMARS3, " +
                 "LAT = excluded.LAT, " +
                 "LNT = excluded.LNT, " +
-                "WORK_DTTM = excluded.WORK_DTTM";
+                "WORK_DTTM = excluded.WORK_DTTM " +
+                "WHERE excluded.WORK_DTTM <> WORK_DTTM"; // WORK_DTTM 이 이전과 다른 경우에만 업데이트
 
 
         try {
