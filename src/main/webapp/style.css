@@ -46,16 +46,6 @@ section {
     background-color: lightgrey;
 }
 
-.tables tbody {
-    text-align: center;
-}
-
-.tables tr:last-child td {
-    border-bottom: 1px lightgrey;
-}
-
-h1, a {
-    margin: 0 auto;
-    display: block;
+.tables td {
     text-align: center;
 }

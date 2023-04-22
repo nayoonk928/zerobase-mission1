@@ -20,35 +20,29 @@ public class HistoryDAO {
         connector.connect();
         Connection conn = connector.getConnection();
         PreparedStatement pstmt = null;
-        String query = "INSERT INTO wifiHistory (HIS_NO, LAT, LNT, LKUP_DTTM) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO wifiHistory (LAT, LNT, LKUP_DTTM) VALUES (?, ?, ?)";
 
         try {
-            // 만약 wifiHistory 테이블이 없으면 생성한다.
+            // 만약 wifiHistory 테이블이 없으면 생성
             if (!connector.checkTableExists("wifiHistory")) {
-                String createTableQuery = "CREATE TABLE wifiHistory (HIS_NO INTEGER PRIMARY KEY, LAT TEXT, LNT TEXT, LKUP_DTTM TEXT)";
+                String createTableQuery = "CREATE TABLE wifiHistory (HIS_NO INTEGER PRIMARY KEY AUTOINCREMENT, LAT TEXT, LNT TEXT, LKUP_DTTM TEXT)";
                 Statement createStmt = conn.createStatement();
                 createStmt.execute(createTableQuery);
             }
 
-            // HIS_NO 가 가장 큰 값 구하기
-            int hisNo = 0;
-            String maxHisNoQuery = "SELECT MAX(HIS_NO) AS MAX_HIS_NO FROM wifiHistory";
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(maxHisNoQuery);
-            if (rs.next()) {
-                hisNo = rs.getInt("MAX_HIS_NO");
-            }
-
-            // HIS_NO에 1을 더해서 새로운 값을 생성
-            hisNo++;
-
-            // PreparedStatement 를 이용해 새로운 히스토리 정보를 데이터베이스에 저장합니다.
-            pstmt = conn.prepareStatement(query);
-            pstmt.setInt(1, hisNo);
-            pstmt.setString(2, Double.toString(myLat));
-            pstmt.setString(3, Double.toString(myLnt));
-            pstmt.setString(4, lkupDttm);
+            // PreparedStatement 를 이용해 새로운 히스토리 정보를 데이터베이스에 저장
+            pstmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, Double.toString(myLat));
+            pstmt.setString(2, Double.toString(myLnt));
+            pstmt.setString(3, lkupDttm);
             pstmt.executeUpdate();
+
+            // 생성된 HIS_NO 값 구하기
+            ResultSet rs = pstmt.getGeneratedKeys();
+            int hisNo = 0;
+            if (rs.next()) {
+                hisNo = rs.getInt(1);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

@@ -36,7 +36,7 @@ public class LoadWifiServlet extends HttpServlet {
             if (wifiResponse != null) {
                 int totalCount = wifiResponse.getTotalCount();
                 request.setAttribute("totalCount", totalCount);
-                request.getRequestDispatcher("loadWifi.jsp").forward(request, response);
+                request.getRequestDispatcher("load-wifi.jsp").forward(request, response);
             } else {
                 System.out.println("WifiResponse is null.");
             }
