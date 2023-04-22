@@ -7,6 +7,7 @@ package DAO;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 
 public class SqliteConnector {
     private Connection connection;
@@ -36,5 +37,13 @@ public class SqliteConnector {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean checkTableExists(String tableName) throws SQLException {
+        Connection conn = getConnection();
+        ResultSet tables = conn.getMetaData().getTables(null, null, tableName, null);
+        boolean tableExists = tables.next();
+        tables.close();
+        return tableExists;
     }
 }

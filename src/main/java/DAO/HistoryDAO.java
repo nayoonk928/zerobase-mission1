@@ -23,6 +23,13 @@ public class HistoryDAO {
         String query = "INSERT INTO wifiHistory (HIS_NO, LAT, LNT, LKUP_DTTM) VALUES (?, ?, ?, ?)";
 
         try {
+            // 만약 wifiHistory 테이블이 없으면 생성한다.
+            if (!connector.checkTableExists("wifiHistory")) {
+                String createTableQuery = "CREATE TABLE wifiHistory (HIS_NO INTEGER PRIMARY KEY, LAT TEXT, LNT TEXT, LKUP_DTTM TEXT)";
+                Statement createStmt = conn.createStatement();
+                createStmt.execute(createTableQuery);
+            }
+
             // HIS_NO 가 가장 큰 값 구하기
             int hisNo = 0;
             String maxHisNoQuery = "SELECT MAX(HIS_NO) AS MAX_HIS_NO FROM wifiHistory";
