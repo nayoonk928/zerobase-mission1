@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="style.css" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        $(window).on('beforeunload', function() {
+        $(window).on('beforeunload', function () {
             // "근처 Wifi 정보 보기" 버튼을 누른 후에만 사용자의 입력값 유지
             if (myLat && myLnt) {
                 $('.myLat').val(myLat);
@@ -39,26 +39,24 @@
             <li>|</li>
             <li><a href="bookmark/bookmark-view.jsp">북마크 보기</a></li>
             <li>|</li>
-            <li><a href="bookmark/bookmark-group.jsp">북마크 그룹 관리</a></li>
+            <li><a href="bookmark/bookmark-group-view.jsp">북마크 그룹 관리</a></li>
         </ul>
     </nav>
 </header>
 
 <main>
     <section>
-        <form action="FindNearWifiServlet" method="GET">
-            <%
-                String latStr = request.getParameter("myLat");
-                String lntStr = request.getParameter("myLnt");
+        <%
+            String latStr = request.getParameter("myLat");
+            String lntStr = request.getParameter("myLnt");
 
-                Double myLat = latStr == null ? 0.0 : Double.parseDouble(latStr);
-                Double myLnt = lntStr == null ? 0.0 : Double.parseDouble(lntStr);
-            %>
-            LAT: <input class="myLat" name="myLat" value="<%= myLat %>" placeholder="0.0">
-            , LNT: <input class="myLnt" name="myLnt" value="<%= myLnt %>" placeholder="0.0">
-            <button type="button" id="myLocation" onclick="getLocation()">내 위치 가져오기</button>
-            <button type="button" id="getWifiInfo" onclick="getNearWifi(); insertHistory()">근처 WIFI 정보 보기</button>
-        </form>
+            Double myLat = latStr == null ? 0.0 : Double.parseDouble(latStr);
+            Double myLnt = lntStr == null ? 0.0 : Double.parseDouble(lntStr);
+        %>
+        LAT: <input class="myLat" name="myLat" value="<%= myLat %>" placeholder="0.0">
+        , LNT: <input class="myLnt" name="myLnt" value="<%= myLnt %>" placeholder="0.0">
+        <button type="button" id="myLocation" onclick="getLocation()">내 위치 가져오기</button>
+        <button type="button" id="getWifiInfo" onclick="getNearWifi(); insertHistory()">근처 WIFI 정보 보기</button>
     </section>
 
     <table class="tables">

@@ -23,7 +23,7 @@
       <li>|</li>
       <li><a href="bookmark-view.jsp">북마크 보기</a></li>
       <li>|</li>
-      <li><a href="bookmark-group.jsp">북마크 그룹 관리</a></li>
+      <li><a href="bookmark-group-view.jsp">북마크 그룹 관리</a></li>
     </ul>
   </nav>
 </header>

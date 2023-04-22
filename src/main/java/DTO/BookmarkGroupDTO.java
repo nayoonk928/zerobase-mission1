@@ -12,4 +12,5 @@ public class BookmarkGroupDTO {
     private String BMG_NM; // 북마크 그룹 이름
     private int BMG_ORDER; // 순서
     private String BMG_CR_DTTM; // 만든 날짜
+    private String BMG_UP_DTTM; // 수정한 날짜
 }

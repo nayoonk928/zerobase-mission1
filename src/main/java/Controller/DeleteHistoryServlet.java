@@ -18,7 +18,13 @@ public class DeleteHistoryServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // HIS_NO 파라미터 받기
-        int hisNo = Integer.parseInt(request.getParameter("hisNo"));
+        String hisNoStr = request.getParameter("hisNo");
+
+        if (hisNoStr == null) {
+            return;
+        }
+
+        int hisNo = Integer.parseInt(hisNoStr);
 
         // HistoryDAO 를 이용해 해당 행 삭제
         HistoryDAO historyDAO = new HistoryDAO();
