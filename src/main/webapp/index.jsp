@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <title>와이파이 정보 구하기</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(window).on('beforeunload', function() {
@@ -22,8 +22,8 @@
             }
         });
     </script>
-    <script src="js/index.js"></script>
-    <script src="js/history.js"></script>
+    <script type="text/javascript" src="js/index.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="js/history.js" charset="UTF-8"></script>
 </head>
 <body>
 
@@ -37,9 +37,9 @@
             <li>|</li>
             <li><a href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a></li>
             <li>|</li>
-            <li><a href="HomeServlet">북마크 보기</a></li>
+            <li><a href="bookmark/bookmark-view.jsp">북마크 보기</a></li>
             <li>|</li>
-            <li><a href="HomeServlet">북마크 그룹 관리</a></li>
+            <li><a href="bookmark/bookmark-group.jsp">북마크 그룹 관리</a></li>
         </ul>
     </nav>
 </header>
@@ -61,8 +61,7 @@
         </form>
     </section>
 
-    <table>
-        <thead>
+    <table class="tables">
         <tr>
             <th>거리(Km)</th>
             <th>관리번호</th>
@@ -82,7 +81,6 @@
             <th>Y좌표</th>
             <th>작업일자</th>
         </tr>
-        </thead>
         <tbody id="wifiTableBody">
         <tr>
             <td colspan="17" height="50">위치 정보를 입력한 후에 조회해 주세요.</td>

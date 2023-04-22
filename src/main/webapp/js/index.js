@@ -72,7 +72,7 @@ function getNearWifi() {
                 row.innerHTML = "<td>" + wifiDTO.distance + "</td>" +
                     "<td>" + wifiDTO.X_SWIFI_MGR_NO + "</td>" +
                     "<td>" + wifiDTO.X_SWIFI_WRDOFC + "</td>" +
-                    "<td>" + wifiDTO.X_SWIFI_MAIN_NM + "</td>" +
+                    "<td><a href=\"GetDetailedInfoServlet?mgrNo=" + wifiDTO.X_SWIFI_MGR_NO + "&distance=" + wifiDTO.distance + "\">" + wifiDTO.X_SWIFI_MAIN_NM + "</a></td>" +
                     "<td>" + wifiDTO.X_SWIFI_ADRES1 + "</td>" +
                     "<td>" + wifiDTO.X_SWIFI_ADRES2 + "</td>" +
                     "<td>" + wifiDTO.X_SWIFI_INSTL_FLOOR + "</td>" +
@@ -89,6 +89,7 @@ function getNearWifi() {
 
                 wifiTableBody.appendChild(row);
             }
+
         },
         error: function (xhr, status, error) {
             console.log(xhr); // 오류 출력

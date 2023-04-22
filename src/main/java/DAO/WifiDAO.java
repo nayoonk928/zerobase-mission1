@@ -200,6 +200,63 @@ public class WifiDAO {
 
         return wifiList;
     }
+
+    public WifiDTO getDetailedInfo(String mgrNo) throws SQLException {
+        connector.connect();
+        Connection conn = connector.getConnection();
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        String query = "SELECT * FROM wifiInfo WHERE X_SWIFI_MGR_NO=?";
+
+        WifiDTO wifiDTO = new WifiDTO();
+        try {
+            pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, mgrNo);
+            rs = pstmt.executeQuery();
+
+            String X_SWIFI_MGR_NO = rs.getString("X_SWIFI_MGR_NO");
+            String X_SWIFI_WRDOFC = rs.getString("X_SWIFI_WRDOFC");
+            String X_SWIFI_MAIN_NM = rs.getString("X_SWIFI_MAIN_NM");
+            String X_SWIFI_ADRES1 = rs.getString("X_SWIFI_ADRES1");
+            String X_SWIFI_ADRES2 = rs.getString("X_SWIFI_ADRES2");
+            String X_SWIFI_INSTL_FLOOR = rs.getString("X_SWIFI_INSTL_FLOOR");
+            String X_SWIFI_INSTL_TY = rs.getString("X_SWIFI_INSTL_TY");
+            String X_SWIFI_INSTL_MBY = rs.getString("X_SWIFI_INSTL_MBY");
+            String X_SWIFI_SVC_SE = rs.getString("X_SWIFI_SVC_SE");
+            String X_SWIFI_CMCWR = rs.getString("X_SWIFI_CMCWR");
+            String X_SWIFI_CNSTC_YEAR = rs.getString("X_SWIFI_CNSTC_YEAR");
+            String X_SWIFI_INOUT_DOOR = rs.getString("X_SWIFI_INOUT_DOOR");
+            String X_SWIFI_REMARS3 = rs.getString("X_SWIFI_REMARS3");
+            Double LAT = rs.getDouble("LAT");
+            Double LNT = rs.getDouble("LNT");
+            String WORK_DTTM = rs.getString("WORK_DTTM");
+
+            wifiDTO.setX_SWIFI_MGR_NO(X_SWIFI_MGR_NO);
+            wifiDTO.setX_SWIFI_WRDOFC(X_SWIFI_WRDOFC);
+            wifiDTO.setX_SWIFI_MAIN_NM(X_SWIFI_MAIN_NM);
+            wifiDTO.setX_SWIFI_ADRES1(X_SWIFI_ADRES1);
+            wifiDTO.setX_SWIFI_ADRES2(X_SWIFI_ADRES2);
+            wifiDTO.setX_SWIFI_INSTL_FLOOR(X_SWIFI_INSTL_FLOOR);
+            wifiDTO.setX_SWIFI_INSTL_TY(X_SWIFI_INSTL_TY);
+            wifiDTO.setX_SWIFI_INSTL_MBY(X_SWIFI_INSTL_MBY);
+            wifiDTO.setX_SWIFI_SVC_SE(X_SWIFI_SVC_SE);
+            wifiDTO.setX_SWIFI_CMCWR(X_SWIFI_CMCWR);
+            wifiDTO.setX_SWIFI_CNSTC_YEAR(X_SWIFI_CNSTC_YEAR);
+            wifiDTO.setX_SWIFI_INOUT_DOOR(X_SWIFI_INOUT_DOOR);
+            wifiDTO.setX_SWIFI_REMARS3(X_SWIFI_REMARS3);
+            wifiDTO.setLAT(LAT);
+            wifiDTO.setLNT(LNT);
+            wifiDTO.setWORK_DTTM(WORK_DTTM);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (pstmt != null) pstmt.close();
+            if (conn != null) conn.close();
+        }
+
+        return wifiDTO;
+    }
 }
 
 
