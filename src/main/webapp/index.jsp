@@ -35,11 +35,11 @@
             <li>|</li>
             <li><a href="history.jsp">위치 히스토리 목록</a></li>
             <li>|</li>
-            <li><a href="load-wifi.jsp">Open API 와이파이 정보 가져오기</a></li>
+            <li><a href="LoadWifiServlet">Open API 와이파이 정보 가져오기</a></li>
             <li>|</li>
-            <li><a href="bookmark/bookmark-view.jsp">북마크 보기</a></li>
+            <li><a href="bookmark-view.jsp">북마크 보기</a></li>
             <li>|</li>
-            <li><a href="bookmark/bookmark-group-view.jsp">북마크 그룹 관리</a></li>
+            <li><a href="bookmark-group-view.jsp">북마크 그룹 관리</a></li>
         </ul>
     </nav>
 </header>

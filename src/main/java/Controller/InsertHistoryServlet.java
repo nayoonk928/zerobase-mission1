@@ -46,9 +46,4 @@ public class InsertHistoryServlet extends HttpServlet {
             response.getWriter().println("Database error: " + e.getMessage());
         }
     }
-
-    protected void doPost(HttpServletRequest request,  HttpServletResponse response)
-            throws ServletException, IOException {
-        doGet(request, response);
-    }
 }

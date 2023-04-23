@@ -54,11 +54,11 @@ public class BookmarkGroupDAO {
             pstmt.setString(4, "");
             pstmt.executeUpdate();
 
-            // 생성된 BM_ID 값 구하기
+            // 생성된 BMG_ID 값 구하기
             rs = pstmt.getGeneratedKeys();
-            int bmId = 0;
+            int bmgId = 0;
             if (rs.next()) {
-                bmId = rs.getInt(1);
+                bmgId = rs.getInt(1);
             }
 
             // 성공적으로 북마크 그룹을 추가한 경우

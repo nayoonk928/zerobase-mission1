@@ -17,7 +17,7 @@ function insertBookmarkGroup() {
         success: function (response) {
             if (response.includes("created")) {
                 alert("북마크 추가를 완료하였습니다.");
-                window.location.href = "bookmark-group.jsp";
+                window.location.href = "bookmark-group-view.jsp";
             } else if (response.includes("exists")) {
                 alert("같은 순서의 북마크 그룹이 이미 존재합니다.")
             } else {
@@ -36,7 +36,7 @@ function getBookmarkGroup() {
         url: "GetBookmarkGroupServlet",
         dataType: "json",
         success: function (bookmarkGroups) {
-            console.log(bookmarkGroups);
+
             if (bookmarkGroups.length > 0) {
                 let tbody = document.getElementById("bookmarkGroupTableBody");
                 tbody.innerHTML = "";
@@ -53,6 +53,39 @@ function getBookmarkGroup() {
                         "<a href='#' onclick='deleteBookmarkGroup(" + bookmarkGroup.BMG_ID.toString() + ")'>삭제</a></td>";
 
                     tbody.appendChild(row);
+                }
+            }
+        },
+        error: function (xhr, status, error) {
+            console.log(xhr); // 오류 출력
+            console.log(status);
+            console.log(error);
+            alert("Error: " + error);
+        }
+    });
+}
+
+function getBookmarkGroupName() {
+    $.ajax({
+        type: "GET",
+        url: "GetBookmarkGroupServlet",
+        dataType: "json",
+        success: function (bookmarkGroups) {
+
+            if (bookmarkGroups.length > 0) {
+                let select = document.getElementById("bookmarkGroupSelect");
+                select.innerHTML = "";
+
+                let defaultOption = document.createElement("option");
+                defaultOption.value = "";
+                defaultOption.text = "북마크 그룹 선택";
+                select.appendChild(defaultOption);
+
+                for (let bookmarkGroup of bookmarkGroups) {
+                    let option = document.createElement("option");
+                    option.value = bookmarkGroup.BMG_ID;
+                    option.text = bookmarkGroup.BMG_NM;
+                    select.appendChild(option);
                 }
             }
         },

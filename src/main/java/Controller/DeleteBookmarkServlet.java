@@ -2,7 +2,7 @@ package Controller;
 /*
     @author Nayoon
  */
-import DAO.BookmarkGroupDAO;
+import DAO.BookmarkDAO;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -12,24 +12,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "DeleteBookmarkGroupServlet", urlPatterns = {"/DeleteBookmarkGroupServlet"})
-public class DeleteBookmarkGroupServlet extends HttpServlet {
+@WebServlet(name = "DeleteBookmarkServlet", urlPatterns = {"/DeleteBookmarkServlet"})
+public class DeleteBookmarkServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // BMG_ID 파라미터 받기
-        String bmgIdStr = request.getParameter("bmgId");
+        // BM_ID 파라미터 받기
+        String bmIdStr = request.getParameter("bmId");
 
-        if (bmgIdStr == null) {
+        if (bmIdStr == null) {
             return;
         }
 
-        int bmgId = Integer.parseInt(bmgIdStr);
+        int bmId = Integer.parseInt(bmIdStr);
 
-        BookmarkGroupDAO bmgDAO = new BookmarkGroupDAO();
+        BookmarkDAO bmDAO = new BookmarkDAO();
         try {
-            bmgDAO.deleteBookmarkGroup(bmgId);
+            bmDAO.deleteBookmark(bmId);
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -2,8 +2,8 @@ package Controller;
 /*
     @author Nayoon
  */
-import DAO.BookmarkGroupDAO;
-import DTO.BookmarkGroupDTO;
+import DAO.BookmarkDAO;
+import DTO.BookmarkDTO;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -15,16 +15,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "GetBookmarkGroupServlet", urlPatterns = {"/GetBookmarkGroupServlet"})
-public class GetBookmarkGroupServlet extends HttpServlet {
+@WebServlet(name = "GetBookmarkServlet", urlPatterns = {"/GetBookmarkServlet"})
+public class GetBookmarkServlet extends HttpServlet {
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        BookmarkGroupDAO bmgDAO = new BookmarkGroupDAO();
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
+        BookmarkDAO bmDAO = new BookmarkDAO();
         try {
-            List<BookmarkGroupDTO> bookmarkGroups = bmgDAO.getBookmarkGroup();
+            List<BookmarkDTO> bookmarks = bmDAO.getBookmark();
             response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write(new Gson().toJson(bookmarkGroups));
+            response.getWriter().write(new Gson().toJson(bookmarks));
         } catch (SQLException e) {
             e.printStackTrace();
         }

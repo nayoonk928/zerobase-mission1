@@ -25,6 +25,10 @@ public class GetDetailedInfoServlet extends HttpServlet {
         // distance 파라미터 받기
         String distance = request.getParameter("distance");
 
+        if (mgrNo == null || distance == null) {
+            return;
+        }
+
         WifiDAO wifiDAO = new WifiDAO();
 
         try {
