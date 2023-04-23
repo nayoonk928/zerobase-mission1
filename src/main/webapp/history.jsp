@@ -17,7 +17,7 @@
 </head>
 <body>
 <header>
-    <h1>와이파이 정보 구하기</h1>
+    <h1>위치 히스토리 목록</h1>
     <nav>
         <ul>
             <li><a href="index.jsp">홈</a></li>

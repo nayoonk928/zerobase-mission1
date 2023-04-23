@@ -24,8 +24,6 @@ public class GetBookmarkByIdServlet extends HttpServlet {
         // BM_ID 파라미터 받기
         String bmIdStr = request.getParameter("bmId");
 
-        System.out.println(bmIdStr);
-
         if (bmIdStr == null) {
             return;
         }

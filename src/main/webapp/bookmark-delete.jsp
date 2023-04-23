@@ -14,7 +14,7 @@
 <body>
 
 <header>
-    <h1>북마크 목록</h1>
+    <h1>북마크 삭제</h1>
     <nav>
         <ul>
             <li><a href="index.jsp">홈</a></li>
