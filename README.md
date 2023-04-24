@@ -4,7 +4,7 @@
 공공 와이파이 Open API를 기반으로 와이파이 정보를 저장하고 조회하는 프로젝트
 
 # 👩‍💻 Tech Stack
-Language: Java, JavaScript, CSS
+Language: Java, JavaScript
 
 Tools: IntelliJ, Tomcat
 
