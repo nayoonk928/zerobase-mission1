@@ -23,13 +23,14 @@ public class InsertBookmarkServlet extends HttpServlet{
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String bmgName = request.getParameter("bmgName");
-        String wifiName = request.getParameter("wifiName");
+        String bmgIdStr = request.getParameter("bmgId");
+        String mgrNo = request.getParameter("mgrNo");
 
-
-        if (bmgName == null || wifiName == null) {
+        if (bmgIdStr == null || mgrNo == null) {
             return;
         }
+
+        int bmgId = Integer.parseInt(bmgIdStr);
 
         // 버튼을 누른 시간 구하기
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -38,7 +39,7 @@ public class InsertBookmarkServlet extends HttpServlet{
         // BookmarkDAO 객체를 생성하고 BookmarkDAO() 메서드를 호출하여 값을 전달
         BookmarkDAO bmDAO = new BookmarkDAO();
         try {
-            bmDAO.insertBookmark(bmgName, wifiName, formattedDate);
+            bmDAO.insertBookmark(bmgId, mgrNo, formattedDate);
         } catch (SQLException e) {
             response.getWriter().write("Database error: " + e.getMessage());
         }

@@ -42,7 +42,7 @@
 %>
 <form id="insertBookmarkForm" action="InsertBookmarkServlet" method="GET">
     <input type="hidden" id="bmgId" name="bmgId" value="">
-    <input type="hidden" id="wifiName" name="wifiName" value="<%= wifiDTO.getX_SWIFI_MAIN_NM() %>">
+    <input type="hidden" id="mgrNo" name="mgrNo" value="<%=wifiDTO.getX_SWIFI_MGR_NO()%>">
     <div>
         <select id="bookmarkGroupSelect">
             <option>북마크 그룹 이름 선택</option>
@@ -55,7 +55,7 @@
     <tr><th>거리(Km)</th><td>${distance}</td></tr>
     <tr><th>관리번호</th><td>${wifiDTO.getX_SWIFI_MGR_NO()}</td></tr>
     <tr><th>자치구</th><td>${wifiDTO.getX_SWIFI_WRDOFC()}</td></tr>
-    <tr><th>와이파이명</th><td name="wifiName"><a href="GetDetailedInfoServlet?mgrNo=${wifiDTO.getX_SWIFI_MGR_NO()}&distance=${distance}">${wifiDTO.getX_SWIFI_MAIN_NM()}</a></td></tr>
+    <tr><th>와이파이명</th><td><a href="GetDetailedInfoServlet?mgrNo=${wifiDTO.getX_SWIFI_MGR_NO()}&distance=${distance}">${wifiDTO.getX_SWIFI_MAIN_NM()}</a></td></tr>
     <tr><th>도로명주소</th><td>${wifiDTO.getX_SWIFI_ADRES1()}</td></tr>
     <tr><th>상세주소</th><td>${wifiDTO.getX_SWIFI_ADRES2()}</td></tr>
     <tr><th>설치위치(층)</th><td>${wifiDTO.getX_SWIFI_INSTL_FLOOR()}</td></tr>

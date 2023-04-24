@@ -115,7 +115,7 @@ function updateBookmarkGroup() {
         success: function (response) {
             if (response.includes("updated")) {
                 alert("북마크 그룹 수정을 완료하였습니다.");
-                window.location.href = "bookmark-group.jsp";
+                window.location.href = "bookmark-group-view.jsp";
             } else if (response.includes("exists")) {
                 alert("같은 순서의 북마크 그룹이 이미 존재합니다.")
             } else {

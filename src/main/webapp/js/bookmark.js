@@ -2,11 +2,11 @@
     @author Nayoon
  */
 function insertBookmark() {
-    var selectedbmgId = $("#bookmarkGroupSelect option:selected").val();
-    var selectedbmgName = $("#bookmarkGroupSelect option:selected").text();
-    var wifiName = $("#wifiName").val();
+    let selectedbmgId = $("#bookmarkGroupSelect option:selected").val();
+    let selectedbmgName = $("#bookmarkGroupSelect option:selected").text();
+    let mgrNo = $("#mgrNo").val();
 
-    var bookmarkGroupDTO = {
+    let bookmarkGroupDTO = {
         id: selectedbmgId,
         name: selectedbmgName
     };
@@ -17,7 +17,7 @@ function insertBookmark() {
         data: {
             bmgId: bookmarkGroupDTO.id,
             bmgName: bookmarkGroupDTO.name,
-            wifiName: wifiName
+            mgrNo: mgrNo
         },
         success: function(data) {
             alert("북마크가 추가되었습니다.");
@@ -43,7 +43,7 @@ function getBookmark() {
 
                 for (let bookmark of bookmarks) {
                     let row = document.createElement("tr");
-                    row.innerHTML = "<td>" + bookmark.BM_ID.toString() + "</td>" +
+                    row.innerHTML = "<td>" + bookmark.BMG_ID.toString() + "</td>" +
                         "<td>" + bookmark.BMG_NM + "</td>" +
                         "<td>" + bookmark.X_SWIFI_MAIN_NM + "</td>" +
                         "<td>" + bookmark.BM_REGI_DTTM + "</td>" +

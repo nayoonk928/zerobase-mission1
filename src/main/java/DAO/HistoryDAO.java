@@ -25,7 +25,8 @@ public class HistoryDAO {
         try {
             // 만약 wifiHistory 테이블이 없으면 생성
             if (!connector.checkTableExists("wifiHistory")) {
-                String createTableQuery = "CREATE TABLE wifiHistory (HIS_NO INTEGER PRIMARY KEY AUTOINCREMENT, LAT TEXT, LNT TEXT, LKUP_DTTM TEXT)";
+                String createTableQuery = "CREATE TABLE wifiHistory " +
+                        "(HIS_NO INTEGER PRIMARY KEY AUTOINCREMENT, LAT TEXT, LNT TEXT, LKUP_DTTM TEXT)";
                 Statement createStmt = conn.createStatement();
                 createStmt.execute(createTableQuery);
             }
