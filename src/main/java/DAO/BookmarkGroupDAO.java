@@ -16,6 +16,19 @@ public class BookmarkGroupDAO {
         connector.connect();
     }
 
+    public void createBookmarkGroup() throws SQLException {
+        connector.connect();
+        Connection conn = connector.getConnection();
+        String createTableQuery = "CREATE TABLE bookmarkGroup " +
+                "(BMG_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "BMG_NM TEXT, " +
+                "BMG_ORDER INTEGER, " +
+                "BMG_CR_DTTM TEXT, " +
+                "BMG_UP_DTTM TEXT)";
+        Statement createStmt = conn.createStatement();
+        createStmt.execute(createTableQuery);
+    }
+
     public boolean insertBookmarkGroup(String bmgName, int order, String createDttm) throws SQLException {
         connector.connect();
         Connection conn = connector.getConnection();
@@ -26,14 +39,7 @@ public class BookmarkGroupDAO {
         try {
             // 만약 bookmarkGroup 테이블이 없으면 생성
             if (!connector.checkTableExists("bookmarkGroup")) {
-                String createTableQuery = "CREATE TABLE bookmarkGroup " +
-                        "(BMG_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        "BMG_NM TEXT, " +
-                        "BMG_ORDER INTEGER, " +
-                        "BMG_CR_DTTM TEXT, " +
-                        "BMG_UP_DTTM TEXT)";
-                Statement createStmt = conn.createStatement();
-                createStmt.execute(createTableQuery);
+                createBookmarkGroup();
             }
 
             // 같은 BMG_ORDER 값이 존재하는지 확인
@@ -80,6 +86,11 @@ public class BookmarkGroupDAO {
         List<BookmarkGroupDTO> bookmarkGroups = new ArrayList<>();
 
         try {
+            // 만약 bookmarkGroup 테이블이 없으면 생성
+            if (!connector.checkTableExists("bookmarkGroup")) {
+                createBookmarkGroup();
+            }
+
             pstmt = conn.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
 

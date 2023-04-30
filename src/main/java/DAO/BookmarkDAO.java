@@ -16,6 +16,22 @@ public class BookmarkDAO {
         connector.connect();
     }
 
+    public void createBookmark() throws SQLException {
+        connector.connect();
+        connector.connect();
+        Connection conn = connector.getConnection();
+
+        String createTableQuery = "CREATE TABLE bookmark " +
+                "(BM_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "BMG_ID INTEGER, " +
+                "X_SWIFI_MGR_NO TEXT, " +
+                "BM_REGI_DTTM TEXT, " +
+                "FOREIGN KEY (BMG_ID) REFERENCES bookmarkGroup(BMG_ID), " +
+                "FOREIGN KEY (X_SWIFI_MGR_NO) REFERENCES wifiInfo(X_SWIFI_MGR_NO))";
+        Statement createStmt = conn.createStatement();
+        createStmt.executeUpdate(createTableQuery);
+    }
+
     public void insertBookmark(int bmgId, String mgrNo, String regiDttm) throws SQLException {
         connector.connect();
         Connection conn = connector.getConnection();
@@ -25,15 +41,7 @@ public class BookmarkDAO {
         try {
             // 만약 bookmark 테이블이 없으면 생성
             if (!connector.checkTableExists("bookmark")) {
-                String createTableQuery = "CREATE TABLE bookmark " +
-                        "(BM_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        "BMG_ID INTEGER, " +
-                        "X_SWIFI_MGR_NO TEXT, " +
-                        "BM_REGI_DTTM TEXT, " +
-                        "FOREIGN KEY (BMG_ID) REFERENCES bookmarkGroup(BMG_ID), " +
-                        "FOREIGN KEY (X_SWIFI_MGR_NO) REFERENCES wifiInfo(X_SWIFI_MGR_NO))";
-                Statement createStmt = conn.createStatement();
-                createStmt.executeUpdate(createTableQuery);
+                createBookmark();
             }
 
             // PreparedStatement 를 이용해 새로운 북마크 정보를 데이터베이스에 저장
@@ -68,6 +76,11 @@ public class BookmarkDAO {
         List<BookmarkDTO> bookmarks = new ArrayList<>();
 
         try {
+            // 만약 bookmark 테이블이 없으면 생성
+            if (!connector.checkTableExists("bookmark")) {
+                createBookmark();
+            }
+
             pstmt = conn.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
 

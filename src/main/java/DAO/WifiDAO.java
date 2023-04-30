@@ -28,6 +28,30 @@ public class WifiDAO {
         this.connector = connector;
     }
 
+    public void createWifiDB() throws SQLException {
+        connector.connect();
+        Connection conn = connector.getConnection();
+        String createTableQuery = "CREATE TABLE IF NOT EXISTS wifiInfo ("+
+                "X_SWIFI_MGR_NO TEXT PRIMARY KEY,"+
+                "X_SWIFI_WRDOFC TEXT,"+
+                "X_SWIFI_MAIN_NM TEXT,"+
+                "X_SWIFI_ADRES1 TEXT,"+
+                "X_SWIFI_ADRES2 TEXT,"+
+                "X_SWIFI_INSTL_FLOOR TEXT,"+
+                "X_SWIFI_INSTL_TY TEXT,"+
+                "X_SWIFI_INSTL_MBY TEXT,"+
+                "X_SWIFI_SVC_SE TEXT,"+
+                "X_SWIFI_CMCWR TEXT,"+
+                "X_SWIFI_CNSTC_YEAR INTEGER,"+
+                "X_SWIFI_INOUT_DOOR TEXT,"+
+                "X_SWIFI_REMARS3 TEXT,"+
+                "LAT REAL,"+
+                "LNT REAL,"+
+                "WORK_DTTM TEXT);";
+        Statement createStmt = conn.createStatement();
+        createStmt.execute(createTableQuery);
+    }
+
     // 모든 api 데이터 db에 저장
     public void insertWifiToDB() throws IOException, SQLException {
         connector.connect();
@@ -59,25 +83,7 @@ public class WifiDAO {
         try {
             // 만약 wifiInfo 테이블이 없으면 생성
             if (!connector.checkTableExists("wifiInfo")) {
-                String createTableQuery = "CREATE TABLE IF NOT EXISTS wifiInfo ("+
-                        "X_SWIFI_MGR_NO TEXT PRIMARY KEY,"+
-                        "X_SWIFI_WRDOFC TEXT,"+
-                        "X_SWIFI_MAIN_NM TEXT,"+
-                        "X_SWIFI_ADRES1 TEXT,"+
-                        "X_SWIFI_ADRES2 TEXT,"+
-                        "X_SWIFI_INSTL_FLOOR TEXT,"+
-                        "X_SWIFI_INSTL_TY TEXT,"+
-                        "X_SWIFI_INSTL_MBY TEXT,"+
-                        "X_SWIFI_SVC_SE TEXT,"+
-                        "X_SWIFI_CMCWR TEXT,"+
-                        "X_SWIFI_CNSTC_YEAR INTEGER,"+
-                        "X_SWIFI_INOUT_DOOR TEXT,"+
-                        "X_SWIFI_REMARS3 TEXT,"+
-                        "LAT REAL,"+
-                        "LNT REAL,"+
-                        "WORK_DTTM TEXT);";
-                Statement createStmt = conn.createStatement();
-                createStmt.execute(createTableQuery);
+                createWifiDB();
             }
 
             pstmt = conn.prepareStatement(query);

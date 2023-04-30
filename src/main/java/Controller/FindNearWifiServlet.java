@@ -45,9 +45,4 @@ public class FindNearWifiServlet extends HttpServlet {
             response.getWriter().println("I/O error: " + e.getMessage());
         }
     }
-
-    protected void doPost(HttpServletRequest request,  HttpServletResponse response)
-            throws ServletException, IOException {
-        doGet(request, response);
-    }
 }

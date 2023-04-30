@@ -16,6 +16,15 @@ public class HistoryDAO {
         connector.connect();
     }
 
+    public void createHistory() throws SQLException {
+        connector.connect();
+        Connection conn = connector.getConnection();
+        String createTableQuery = "CREATE TABLE wifiHistory " +
+                "(HIS_NO INTEGER PRIMARY KEY AUTOINCREMENT, LAT TEXT, LNT TEXT, LKUP_DTTM TEXT)";
+        Statement createStmt = conn.createStatement();
+        createStmt.execute(createTableQuery);
+    }
+
     public void insertHistory(double myLat, double myLnt, String lkupDttm) throws SQLException {
         connector.connect();
         Connection conn = connector.getConnection();
@@ -25,10 +34,7 @@ public class HistoryDAO {
         try {
             // 만약 wifiHistory 테이블이 없으면 생성
             if (!connector.checkTableExists("wifiHistory")) {
-                String createTableQuery = "CREATE TABLE wifiHistory " +
-                        "(HIS_NO INTEGER PRIMARY KEY AUTOINCREMENT, LAT TEXT, LNT TEXT, LKUP_DTTM TEXT)";
-                Statement createStmt = conn.createStatement();
-                createStmt.execute(createTableQuery);
+                createHistory();
             }
 
             // PreparedStatement 를 이용해 새로운 히스토리 정보를 데이터베이스에 저장
@@ -60,6 +66,11 @@ public class HistoryDAO {
         List<HistoryDTO> histories = new ArrayList<>();
 
         try {
+            // 만약 wifiHistory 테이블이 없으면 생성
+            if (!connector.checkTableExists("wifiHistory")) {
+                createHistory();
+            }
+
             pstmt = conn.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
 

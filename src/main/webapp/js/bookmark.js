@@ -25,7 +25,11 @@ function insertBookmark() {
         },
         error: function() {
             alert("북마크 추가에 실패했습니다.");
-            window.location.href = "wifi-detailed-info.jsp";
+            if('<%= wifiDTO %>' == 'null') {
+                window.location.href = "index.jsp";
+            } else {
+                window.location.href = "wifi-detailed-info.jsp";
+            }
         }
     });
 }

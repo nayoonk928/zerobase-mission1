@@ -29,8 +29,4 @@ public class GetHistoryServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
-    }
 }

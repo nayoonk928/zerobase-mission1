@@ -1,4 +1,5 @@
-<%@ page import="DTO.WifiDTO" %><%--
+<%@ page import="DTO.WifiDTO" %>
+<%--
   @author Nayoon
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -47,7 +48,7 @@
         <select id="bookmarkGroupSelect">
             <option>북마크 그룹 이름 선택</option>
         </select>
-        <button type="button" id="insertBookmark" onclick="insertBookmark()">북마크 추가하기</button>
+        <button type="button" id="insertBookmark">북마크 추가하기</button>
     </div>
 </form>
 
