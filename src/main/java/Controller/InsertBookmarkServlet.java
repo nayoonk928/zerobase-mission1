@@ -1,7 +1,6 @@
 package Controller;
 
 import DAO.BookmarkDAO;
-import DAO.BookmarkGroupDAO;
 
 import javax.servlet.annotation.WebServlet;
 
