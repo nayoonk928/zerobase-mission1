@@ -12,8 +12,8 @@ Framework/Library: gson, lombok, jQuery
 
 DataBase: SQLite, DBeaver
 
-# 🗒️ Requirements
-* 서울시 공공 와이파이 API
+# 🗒️ Requirements (모두 구현 완료)
+* 서울시 공공 와이파이 API 
   * 와이파이 정보 가져오기 및 db에 저장
   
 * 와이파이 데이터 조회
